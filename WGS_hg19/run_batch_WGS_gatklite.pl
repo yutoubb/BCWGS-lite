@@ -8,7 +8,7 @@ use File::Basename;
 
 die "perl $0 <input_file> <input_fq_ossdir> <output_result_ossdir> <SPLIT> <hg19/b37> <platform> 
 eg. 
-	perl run_batch.pl fq-input.cfg oss://bgionline-priv/tier2/test/ oss://batchcompute-jj/WGS/ 3 b37 Illumina
+	perl run_batch.pl fq-input.cfg oss://bgionline-priv/tier2/test/ oss://batchcompute-jj/WGS/ 3 b37 ILLUMINA
 <fq-input>	samplename	fq1name	fq2name
 "  unless @ARGV==6;
 #perl run_batch.pl fq.input oss://batchcompute-jj/WGS/inputs_fqs/ oss://batchcompute-jj/WGS/ 3 b37 Illumina
@@ -33,7 +33,7 @@ if($ref eq "hg19"){
 	$otherbed="hg19.other.bed";
 }elsif($ref eq "b37"){
 	$reference="human_g1k_v37.fa";
-	$pack="/mnt2/RD/jvjia/ali/WGS_v37/";
+	$pack="/root/BCWGS-Lite/WGS_hg19/";
 	$dbsnp="dbsnp_138.b37.vcf.gz";
 	$known1="Mills_and_1000G_gold_standard.indels.b37.vcf.gz";
 	$known2="1000G_phase1.indels.b37.vcf.gz";
@@ -107,7 +107,7 @@ for my $sam (keys %hash_fq1){
 	"write_mount=$out/gatk_results/:/home/outputs/",
 	"docker=localhost:5000/wgs\@oss://batchcompute-jj/dockers/",
 	"disk=system:ephemeral:100",
-	"cmd=sh dong_gatk.sh","nodes=25","\n");
+	"cmd=sh gatk.sh","nodes=25","\n");
 
 	print OUT join ("\n","[merge_vcf]",			
 	"read_mount=$refoss:/home/references/,$out/gatk_results/:/home/inputs/",
@@ -127,7 +127,7 @@ for my $sam (keys %hash_fq1){
 
 	
 	close OUT;
-	system("bcs sub --file ./$sam-$time.cfg");
+	#system("bcs sub --file ./$sam-$time.cfg");
 }
 
 sub gettime {
