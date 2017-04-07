@@ -107,23 +107,22 @@ for my $sam (keys %hash_fq1){
 	"write_mount=$out/gatk_results/:/home/outputs/",
 	"docker=localhost:5000/wgs\@oss://batchcompute-jj/dockers/",
 	"disk=system:ephemeral:100",
-	"cmd=sh gatk.sh","nodes=25","\n");
+	"cmd=sh gatklite.sh","nodes=25","\n");
 
 	print OUT join ("\n","[merge_vcf]",			
 	"read_mount=$refoss:/home/references/,$out/gatk_results/:/home/inputs/",
 	"write_mount=$out/merge_vcf_results/:/home/outputs/",
-	"docker=localhost:5000/wgs\@oss://batchcompute-jj/dockers/",
 	"type=bcs.a2.large",
 	"disk=system:ephemeral:100",
-	"cmd=sh merge_vcf.sh","nodes=1","\n");
+	"cmd=sh concat_vcf.sh","nodes=1","\n");
 	
 	print OUT join ("\n","[merge_bam]",
-        "read_mount=$out/picard_results/:/home/inputs/",
-        "write_mount=$out/merge_bam_results/:/home/outputs/",
-        "docker=localhost:5000/wgs\@oss://batchcompute-jj/dockers/",
+    "read_mount=$out/picard_results/:/home/inputs/",
+    "write_mount=$out/merge_bam_results/:/home/outputs/",
+    "docker=localhost:5000/wgs\@oss://batchcompute-jj/dockers/",
 	"disk=system:ephemeral:400",
 	"type=bcs.a2.large",
-        "cmd=sh merge_bam.sh","nodes=1","\n");
+    "cmd=sh merge_bam.sh","nodes=1","\n");
 
 	
 	close OUT;

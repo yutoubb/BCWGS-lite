@@ -55,10 +55,10 @@ set -e " > gatk_$chr.sh
 # gatk BQSR
 # input:realign_bamfile
 # output:realign_bqsr_bamfile
-echo "java -Xmx14g -jar GenomeAnalysisTKLite.jar -nct 8 -T RealignerTargetCreator \\
+echo "java -Xmx14g -jar GenomeAnalysisTKLite.jar -nt 8 -T RealignerTargetCreator \\
 -R $reference -o realigner.intervals -I $mkdup_bamfile --known $known_Mills_indels --known $known_1000G_indels -L $chr
 
-java -Xmx14g -jar GenomeAnalysisTKLite.jar -nct 8 -T IndelRealigner \\
+java -Xmx14g -jar GenomeAnalysisTKLite.jar -T IndelRealigner \\
 -R $reference -o $realign_bamfile -targetIntervals realigner.intervals -I $mkdup_bamfile -known $known_Mills_indels -known $known_1000G_indels -model USE_SW -LOD 5 -rf NotPrimaryAlignment
 
 java -Xmx14g -jar GenomeAnalysisTKLite.jar -nct 8 -T BaseRecalibrator \\
@@ -89,9 +89,8 @@ echo "java -Xmx14g -jar GenomeAnalysisTKLite.jar -nct 8 -T UnifiedGenotyper \\
 -A MappingQualityZero \\
 -A QualByDepth \\
 -A RMSMappingQuality \\
--baq BOTH
--glm OFF
-
+-baq OFF \\
+-glm BOTH 
 ">> gatk_$chr.sh
 
 # -A ddQualByDepth \\
